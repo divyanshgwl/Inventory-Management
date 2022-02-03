@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Category Picture</title>
+</head>
+<body>
+<form action="/SaveEditCategoryIcon" method="post" enctype="multipart/form-data">{% csrf_token %}
+<input type="hidden" name="caid" value="{{ row.0 }}" />
+<input type="hidden" name="oldpicture" value="{{ row.2 }}" />
+    <center>
+      <h3>Edit Category Picture</h3>
+       <h4>{{ row.0 }} {{ row.1 }}</h4>
+    <div>
+        <img src="/static/{{ row.2 }}" width="30%"/>
+    </div>
+    <div>
+        <b>Select Image u Want to Replace:</b>
+    </div>
+    <div>
+
+        <input type="file" required name="picture" />
+       <!-- <input type="Submit" value="Save Picture">-->
+
+    </div>
+         <div class="row gap">
+               <div class="col btnstyle " >
+        <button type="Submit" name="btn" value="Edit" class="btn btn-primary w-100" >Edit Picture</button>
+               </div>
+
+               <div class="col btnstyle">
+         <button type="Submit" name="btn" value="Delete" class="btn btn-primary w-100" >Delete</button>
+               </div>
+  </div>
+         <div class="row">
+               <div class="col btnstyle" style="font-size: 18px;font-weight: bold;" >
+
+                   {{ msg }}
+               </div>
+
+
+
+</div></center>
+</form>
+
+ </div>
+			    <button class = "modal-close is-large" aria-label = "close"></button>
+			   </div>
+
+
+<script>
+    function setdata(data)
+    {data=data.replace("(","")
+            data=data.replace(")","")
+            data=data.replaceAll("'","")
+            data=data.split(",")
+            return data
+     }
+         $(".modal-button").click(function() {
+            var target = $(this).data("target");
+            var data=$(this).attr("data")
+            data=setdata(data)
+            $("#caid").val(data[0].trim())
+             $("#categoriesname").val(data[1].trim())
+             $("#picture").attr('src','/static/'+data[2].trim())
+            $("html").addClass("is-clipped");
+            $(target).addClass("is-active");
+         });
+
+         $(".modal-close").click(function() {
+            $("html").removeClass("is-clipped");
+            $(this).parent().removeClass("is-active");
+         });
+      </script>
+</body>
+</html>

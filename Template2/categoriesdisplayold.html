@@ -1,0 +1,228 @@
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+ .root{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   background-color: #dfe6e9;
+   padding: 20px;
+ }
+ .myframe{
+   width:90%;
+   background-color: #fff;
+   padding: 20px;
+   border-radius: 10px;
+  }
+  .gap {
+     margin-top: 20px;
+ }
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+      <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+ <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Material Management</title>
+</head>
+<>
+<div class="root">
+   <div class="myframe">
+     <div class="row" style=" display:flex;align-items:center;font-size:14px;letter-spacing:2px;font-weight: bold; padding-left: 20px;margin-bottom: 10px;">
+               <img src="/static/noimage.png" width="30">
+               List of Categories
+           </div>
+<table class="table">
+  <thead>
+    <tr>
+        <th>categoriesid</th>
+      <th >categoriesname</th>
+        <th>Picture</th>
+         <th>Update</th>
+
+
+
+
+
+
+
+
+
+    </tr>
+  </thead>
+  <tbody>
+     {%  for row in rows %}
+     <tr>
+      <th scope="row">{{ row.0 }}</th>
+      <td>{{ row.1 }}</td>
+      <td><a class = "button is-primary modal-button"  data= "{{ row }}" data-target = "#modalp"><img src="/static/{{ row.2 }}" width="50"/></a><br></td>
+         <td><a  class = "button is-primary modal-button"  data= "{{ row }}" data-target = "#modal" >Edit/Delete</a></td>
+<!--href="/displaycategoriesid?caid={{row.0}}"-->
+<!--href="/EditCategoryPicture?caid={{row.0}}&categoriesname={{ row.1 }}&picture={{ row.2 }}-->
+
+    </tr>
+
+     {% endfor %}
+  </tbody>
+</table></div>
+</div>
+	   <div id = "modal" class = "modal">
+               <div class = "modal-background"></div>
+               <div class = "modal-content"  style=" border-radius:10px;width:600;height:300;background:#FFF;">
+			   <form action="/EditDeleteRecord" >
+    <input type="hidden" id="caid" value="{{ row.0 }}" name="caid" />
+  <div class="root">
+   <div class="myframe">
+           <div class="row" style=" display:flex;align-items:center;font-size:14px;letter-spacing:2px;font-weight: bold; padding-left: 20px;margin-bottom: 10px;">
+               <img src="/static/images.png" width="30">
+               EDIT CATEGORIES
+           </div>
+         <div class="row gap">
+              <div class="col">
+                <input type="text" id="categoriesname" value="{{ row.1 }}" name="categoriesname" class="form-control" placeholder="categories name">
+              </div>
+             </div>
+        <div class="row gap">
+
+              <div class="col btnstyle" style="flex-direction: row;" >
+<center>
+                &nbsp;<img id="picture" name="picture"  width="90" />
+</center>
+              </div>
+
+            </div>
+
+
+
+
+
+        <div class="row gap">
+               <div class="col btnstyle " >
+        <button type="submit" name="btn" value="Edit" class="btn btn-primary w-100" >Edit</button>
+               </div>
+
+               <div class="col btnstyle">
+         <button type="submit" name="btn" value="Delete" class="btn btn-primary w-100" >Delete</button>
+               </div>
+  </div>
+         <div class="row">
+               <div class="col btnstyle" style="font-size: 18px;font-weight: bold;" >
+
+                   {{ msg }}
+               </div>
+
+
+
+
+
+
+   </div>
+  </div>
+
+  </div>
+
+</form>
+
+
+
+
+
+</div>
+       <button class = "modal-close is-large" aria-label = "close"></button>
+</div>
+           <div id = "modalp" class = "modal">
+               <div class = "modal-background"></div>
+               <div class = "modal-content"  style=" border-radius:10px;width:600;height:300;background:#FFF;">
+			   <form action="/SaveEditCategoryIcon" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <!--<input type="hidden" id="caidp" value="{{ row.2 }}" name="caidp" />-->
+                   <input type="hidden" id="caidp" name="caidp" value="{{ row.0 }}" />
+<!--                   <input type="text"  id="picturep" name="oldpicture" value="{{ row.2 }}" />-->
+    <center>
+      <h3>Edit Category Picture</h3>
+
+    <div>
+        <img id="picturep" name="oldpicture"  width="90" />
+       <!-- <img src="/static/{{ row.2 }}" width="30%"/>-->
+    </div>
+    <div>
+        <b>Select Image u Want to Replace:</b>
+    </div>
+    <div>
+
+        <input type="file" required name="picture" />
+       <!-- <input type="Submit" value="Save Picture">-->
+
+    </div>
+         <div class="row gap">
+               <div class="col btnstyle " >
+        <button type="Submit" name="btn1" value="Edit" class="btn btn-primary w-100" >Edit Picture</button>
+               </div>
+
+               <div class="col btnstyle">
+         <button type="Submit" name="btn1" value="Delete" class="btn btn-primary w-100" >Delete</button>
+               </div>
+  </div>
+         <div class="row">
+               <div class="col btnstyle" style="font-size: 18px;font-weight: bold;" >
+
+                   {{ msg }}
+               </div>
+
+
+
+</div></center>
+
+
+
+
+<button class = "modalp-close is-large" aria-label = "close"></button>
+
+</form></div>
+            <button class = "modal-close is-large" aria-label = "close"></button>
+           </div>
+
+
+<script>
+    function setdata(data)
+    {data=data.replace("(","")
+            data=data.replace(")","")
+            data=data.replaceAll("'","")
+            data=data.split(",")
+            return data
+     }
+         $(".modal-button").click(function() {
+            var target = $(this).data("target");
+            var data=$(this).attr("data")
+            data=setdata(data)
+            $("#caidp").val(data[0].trim())
+            $("#caid").val(data[0].trim())
+             $("#categoriesname").val(data[1].trim())
+             $("#picture").attr('src','/static/'+data[2].trim())
+            $("html").addClass("is-clipped");
+            $(target).addClass("is-active");
+         });
+            $(".modal-button").click(function() {
+            var target = $(this).data("target");
+            var data=$(this).attr("data")
+            data=setdata(data)
+            $('#picturep').attr('src','/static/'+data[2].trim())
+            $('#picturep').val(data[2].trim())
+            $("html").addClass("is-clipped");
+            $(target).addClass("is-active");
+
+            });
+         $(".modal-close").click(function() {
+            $("html").removeClass("is-clipped");
+            $(this).parent().removeClass("is-active");
+         });
+
+         </script>
+</body>
+</html>
+
+
